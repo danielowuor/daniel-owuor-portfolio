@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daniel Owuor — Data Scientist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EEF1EA;
+    --paper-dim:#E4E8DF;
+    --ink:#15231F;
+    --ink-soft:#3C4A44;
+    --line:#C6CDBF;
+    --forest:#1F6F5C;
+    --forest-deep:#123D33;
+    --amber:#D98C2B;
+    --crimson:#B23A3A;
+    --card:#F7F8F3;
+    --radius:2px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}
+  }
+
+  ::selection{background:var(--amber); color:var(--forest-deep);}
+
+  a{color:inherit;}
+  h1,h2,h3{font-family:'Fraunces', serif; font-weight:500; margin:0; letter-spacing:-0.01em;}
+
+  .mono{font-family:'IBM Plex Mono', monospace;}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--forest);
+  }
+
+  .wrap{max-width:1080px; margin:0 auto; padding:0 32px;}
+  @media (max-width:640px){ .wrap{padding:0 20px;} }
+
+  /* ---------- Nav ---------- */
+  header.site{
+    position:sticky; top:0; z-index:50;
+    background:rgba(238,241,234,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 32px;
+    max-width:1080px; margin:0 auto;
+  }
+  .nav-name{font-family:'Fraunces', serif; font-weight:500; font-size:18px;}
+  .nav-name .dot{color:var(--amber);}
+  .nav-links{display:flex; gap:28px; font-size:14px;}
+  .nav-links a{text-decoration:none; color:var(--ink-soft); position:relative; padding-bottom:3px;}
+  .nav-links a:hover{color:var(--forest-deep);}
+  .nav-links a::after{
+    content:""; position:absolute; left:0; bottom:0; width:0; height:1px; background:var(--forest);
+    transition:width .25s ease;
+  }
+  .nav-links a:hover::after{width:100%;}
+  .nav-links{list-style:none; margin:0; padding:0;}
+  @media (max-width:640px){ .nav-links{display:none;} }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding:88px 0 64px;
+    border-bottom:1px solid var(--line);
+    position:relative;
+    overflow:hidden;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:48px;
+    align-items:end;
+  }
+  @media (max-width:860px){ .hero-grid{grid-template-columns:1fr;} }
+
+  .hero h1{
+    font-size:clamp(40px, 6vw, 68px);
+    line-height:1.02;
+    margin-top:14px;
+  }
+  .hero h1 em{font-style:italic; color:var(--forest);}
+  .hero p.lede{
+    margin-top:22px;
+    max-width:46ch;
+    font-size:17px;
+    color:var(--ink-soft);
+  }
+  .hero-actions{margin-top:32px; display:flex; gap:16px; flex-wrap:wrap;}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:12px 20px;
+    font-size:14px; font-family:'IBM Plex Mono', monospace;
+    text-decoration:none;
+    border-radius:var(--radius);
+    border:1px solid var(--ink);
+    transition:all .2s ease;
+  }
+  .btn-solid{background:var(--forest-deep); color:var(--paper); border-color:var(--forest-deep);}
+  .btn-solid:hover{background:var(--forest);}
+  .btn-outline:hover{background:var(--ink); color:var(--paper);}
+
+  /* epi curve svg */
+  .curve-box{
+    border:1px solid var(--line);
+    background:var(--card);
+    padding:20px 20px 14px;
+  }
+  .curve-box .cap{
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--ink-soft);
+    margin-bottom:6px; letter-spacing:.05em; text-transform:uppercase;
+  }
+  #epiCurve{width:100%; height:auto; display:block;}
+  .curve-path{
+    fill:none; stroke:var(--forest); stroke-width:2;
+    stroke-dasharray:900; stroke-dashoffset:900;
+    animation:draw 2.4s ease-out forwards;
+  }
+  .curve-fill{ opacity:0; animation:fadeIn 1.5s ease-out 1.6s forwards; }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+  @keyframes fadeIn{ to{ opacity:1; } }
+  .curve-dot{
+    fill:var(--amber); r:3.4;
+    opacity:0;
+    animation:popIn .4s ease-out forwards;
+  }
+  @keyframes popIn{ to{opacity:1;} }
+
+  /* ---------- Section shell ---------- */
+  section{padding:72px 0;}
+  section.alt{background:var(--paper-dim); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .section-head{margin-bottom:40px; max-width:60ch;}
+  .section-head h2{font-size:clamp(28px,4vw,38px); margin-top:8px;}
+  .section-head p{color:var(--ink-soft); margin-top:14px;}
+
+  /* ---------- About ---------- */
+  .about-grid{display:grid; grid-template-columns:1fr 1fr; gap:56px;}
+  @media (max-width:800px){ .about-grid{grid-template-columns:1fr;} }
+  .about-grid p{margin:0 0 16px; color:var(--ink-soft);}
+  .field-log{
+    border-left:2px solid var(--forest);
+    padding-left:22px;
+  }
+  .field-log dt{font-family:'IBM Plex Mono', monospace; font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--forest);}
+  .field-log dd{margin:2px 0 20px; font-size:15px;}
+
+  /* ---------- Skills ---------- */
+  .skill-cols{display:grid; grid-template-columns:repeat(3, 1fr); gap:28px;}
+  @media (max-width:800px){ .skill-cols{grid-template-columns:1fr;} }
+  .skill-card{
+    background:var(--card); border:1px solid var(--line); padding:24px;
+  }
+  .skill-card h3{font-size:17px; margin-bottom:12px;}
+  .skill-card ul{margin:0; padding:0; list-style:none;}
+  .skill-card li{
+    font-size:14.5px; color:var(--ink-soft);
+    padding:7px 0; border-top:1px solid var(--line);
+  }
+  .skill-card li:first-child{border-top:none;}
+
+  /* ---------- Projects ---------- */
+  .project{
+    border:1px solid var(--line);
+    background:var(--card);
+    margin-bottom:28px;
+    display:grid;
+    grid-template-columns:220px 1fr;
+  }
+  @media (max-width:760px){ .project{grid-template-columns:1fr;} }
+  .project-tag{
+    background:var(--forest-deep); color:var(--paper);
+    padding:24px 20px;
+    display:flex; flex-direction:column; justify-content:space-between;
+  }
+  .project-tag .num{font-family:'IBM Plex Mono', monospace; font-size:13px; opacity:.7;}
+  .project-tag .domain{font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--amber); margin-top:14px;}
+  .progress-badge{
+    margin-top:16px;
+    align-self:flex-start;
+    font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.05em; text-transform:uppercase;
+    border:1px solid var(--amber); color:var(--amber);
+    padding:4px 9px;
+  }
+  .project-progress{border-style:dashed;}
+  .project-progress .project-tag{background:var(--forest-deep) linear-gradient(135deg, transparent 0%, rgba(217,140,43,0.08) 100%);}
+  .project-body{padding:26px 28px;}
+  .project-body h3{font-size:22px; margin-bottom:8px;}
+  .project-body .desc{color:var(--ink-soft); font-size:15px; margin-bottom:16px;}
+  .stat-row{display:flex; gap:24px; flex-wrap:wrap; margin-bottom:16px;}
+  .stat{
+    font-family:'IBM Plex Mono', monospace;
+  }
+  .stat .val{font-size:20px; color:var(--forest-deep); font-weight:500; display:block;}
+  .stat .lab{font-size:11px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.05em;}
+  .stack{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px;}
+  .chip{
+    font-family:'IBM Plex Mono', monospace; font-size:12px;
+    padding:4px 10px; border:1px solid var(--line); color:var(--ink-soft);
+  }
+  .project-links a{
+    font-size:14px; text-decoration:none; color:var(--forest-deep); font-weight:500;
+    border-bottom:1px solid var(--forest-deep);
+  }
+  .project-links a:hover{color:var(--amber); border-color:var(--amber);}
+  .note{
+    margin-top:14px; font-size:13px; color:var(--ink-soft); font-style:italic;
+    border-top:1px dashed var(--line); padding-top:10px;
+  }
+
+  /* ---------- Education ---------- */
+  .edu-list{display:flex; flex-direction:column; gap:0;}
+  .edu-item{
+    display:grid; grid-template-columns:160px 1fr; gap:24px;
+    padding:22px 0; border-top:1px solid var(--line);
+  }
+  .edu-item:last-child{border-bottom:1px solid var(--line);}
+  .edu-item .when{font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--forest);}
+  .edu-item h3{font-size:18px; margin-bottom:4px;}
+  .edu-item p{color:var(--ink-soft); margin:0; font-size:14.5px;}
+  @media (max-width:640px){ .edu-item{grid-template-columns:1fr; gap:6px;} }
+
+  /* ---------- Contact ---------- */
+  .contact-box{
+    display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:24px;
+  }
+  .contact-box h2{font-size:clamp(30px,5vw,46px); max-width:14ch;}
+  .contact-links{display:flex; flex-direction:column; gap:10px;}
+  .contact-links a{
+    font-family:'IBM Plex Mono', monospace; font-size:15px; text-decoration:none;
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .contact-links a:hover{color:var(--forest);}
+  .contact-links .arrow{color:var(--amber);}
+
+  footer{
+    padding:28px 0 40px; text-align:center;
+    font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--ink-soft);
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <nav class="nav">
+    <div class="nav-name">Daniel Owuor<span class="dot">.</span></div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">Data Scientist</div>
+        <h1>Turning data into <em>decisions</em>.</h1>
+        <p class="lede">I'm Daniel Owuor, a data scientist who builds predictive models, NLP pipelines, and recommendation systems that hold up outside a notebook. My background in public health taught me to question a result before I trust it — a habit that shows up in every model I ship.</p>
+        <div class="hero-actions">
+          <a href="#projects" class="btn btn-solid">See the projects →</a>
+          <a href="#contact" class="btn btn-outline">Get in touch</a>
+        </div>
+      </div>
+      <div class="curve-box">
+        <div class="cap"><span>Signal detection, illustrated</span><span>n = 4 projects</span></div>
+        <svg id="epiCurve" viewBox="0 0 360 180" xmlns="http://www.w3.org/2000/svg">
+          <line x1="0" y1="150" x2="360" y2="150" stroke="var(--line)" stroke-width="1"/>
+          <path class="curve-fill" d="M0,140 C40,142 60,130 90,120 C130,105 150,60 190,50 C230,42 250,80 290,70 C320,63 340,30 360,20 L360,180 L0,180 Z" fill="var(--forest)" opacity="0.08"/>
+          <path class="curve-path" d="M0,140 C40,142 60,130 90,120 C130,105 150,60 190,50 C230,42 250,80 290,70 C320,63 340,30 360,20" />
+          <circle class="curve-dot" style="animation-delay:2.4s" cx="190" cy="50" />
+          <circle class="curve-dot" style="animation-delay:2.6s" cx="290" cy="70" />
+          <circle class="curve-dot" style="animation-delay:2.8s" cx="360" cy="20" />
+        </svg>
+        <div class="cap" style="margin-top:8px; border-top:1px solid var(--line); padding-top:8px;"><span>models, shipped</span><span>× decisions, made</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">01 — About</div>
+      <h2>Analytical by training, technical by trade.</h2>
+    </div>
+    <div class="about-grid">
+      <div>
+        <p>I'm a data scientist working across predictive modelling, natural language processing, and recommendation systems — comfortable moving from a messy raw dataset to a deployed, stakeholder-ready tool. I completed the Data Science course at Moringa School, where I built end-to-end skills in data analysis, visualization, and machine learning.</p>
+        <p>One thing that shapes how I work: I hold an undergraduate degree in Public Health, with a foundation in biostatistics and epidemiology. It's given me an instinct for questioning a result before trusting it — checking the sampling, the leakage, the confidence interval — rather than taking a metric at face value. It shows up as care and rigor in my modelling, not as a separate specialty.</p>
+        <p>I'm looking for a data science role where I can build models that hold up under scrutiny and translate into decisions people can actually act on.</p>
+      </div>
+      <dl class="field-log">
+        <dt>Role</dt>
+        <dd>Data Scientist</dd>
+        <dt>Education</dd>
+        <dd>Data Science, Moringa School</dd>
+        <dt>Also brings</dt>
+        <dd>A Public Health background — biostatistics &amp; epidemiological rigor</dd>
+        <dt>Focus areas</dt>
+        <dd>Predictive modelling, NLP, recommender systems</dd>
+        <dt>Looking for</dt>
+        <dd>Data-driven roles where evidence shapes strategy</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section id="skills" class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">02 — Toolkit</div>
+      <h2>What I work with.</h2>
+      <p>A general data science stack, sharpened by a background in statistical rigor.</p>
+    </div>
+    <div class="skill-cols">
+      <div class="skill-card">
+        <h3>Analysis &amp; Statistics</h3>
+        <ul>
+          <li>Hypothesis testing &amp; experimental design</li>
+          <li>Exploratory data analysis</li>
+          <li>Python (pandas, numpy)</li>
+          <li>Biostatistics &amp; epidemiological methods (background)</li>
+        </ul>
+      </div>
+      <div class="skill-card">
+        <h3>Machine Learning</h3>
+        <ul>
+          <li>Classification &amp; ensemble models</li>
+          <li>scikit-learn, XGBoost</li>
+          <li>NLP &amp; transformer fine-tuning</li>
+          <li>Model evaluation &amp; SHAP explainability</li>
+        </ul>
+      </div>
+      <div class="skill-card">
+        <h3>Visualization &amp; Delivery</h3>
+        <ul>
+          <li>Matplotlib, Seaborn</li>
+          <li>Tableau dashboards</li>
+          <li>Streamlit deployment</li>
+          <li>Stakeholder-ready reporting</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">03 — Projects</div>
+      <h2>Case studies.</h2>
+      <p>Four projects spanning NLP, predictive classification, customer analytics, and recommendation systems — including one currently in build.</p>
+    </div>
+
+    <!-- Project 1 -->
+    <div class="project">
+      <div class="project-tag">
+        <div class="num">CASE 01</div>
+        <div class="domain">FinTech · NLP</div>
+      </div>
+      <div class="project-body">
+        <h3>Pesa Salama Classifier</h3>
+        <p class="desc">A real-time financial complaint monitor and distress index for Kenya's mobile money ecosystem. Scrapes ~53,500 multilingual Google Play reviews (English, Swahili, Sheng) across six major fintech apps, classifies sentiment and complaint type, and rolls the signal up into a Financial Distress Index with 6-month-ahead forecasting.</p>
+        <div class="stat-row">
+          <div class="stat"><span class="val">0.848</span><span class="lab">Weighted F1 (tuned XGBoost)</span></div>
+          <div class="stat"><span class="val">53.5k</span><span class="lab">reviews, 6 apps</span></div>
+          <div class="stat"><span class="val">3</span><span class="lab">languages handled</span></div>
+        </div>
+        <div class="stack">
+          <span class="chip">AfriBERTa</span>
+          <span class="chip">XGBoost</span>
+          <span class="chip">SHAP</span>
+          <span class="chip">Prophet</span>
+          <span class="chip">Streamlit</span>
+          <span class="chip">Tableau</span>
+        </div>
+        <div class="project-links"><a href="https://github.com/danielowuor/Pesa-Salama-Classifier" target="_blank" rel="noopener">View repository →</a></div>
+      </div>
+    </div>
+
+    <!-- Project 2 -->
+    <div class="project">
+      <div class="project-tag">
+        <div class="num">CASE 02</div>
+        <div class="domain">Predictive Classification</div>
+      </div>
+      <div class="project-body">
+        <h3>H1N1 Vaccine Uptake Prediction</h3>
+        <p class="desc">A binary classification project predicting H1N1 vaccine uptake from the 2009 H1N1 Flu Survey, using demographic, behavioral, and health-belief features. Compares Logistic Regression, Decision Tree, Random Forest, and a Voting Classifier ensemble to identify which factors — doctor recommendation, perceived risk, vaccine-effectiveness belief — drive vaccination behavior.</p>
+        <div class="stat-row">
+          <div class="stat"><span class="val">84%</span><span class="lab">accuracy, Random Forest</span></div>
+          <div class="stat"><span class="val">0.82</span><span class="lab">ROC-AUC</span></div>
+          <div class="stat"><span class="val">4</span><span class="lab">models compared</span></div>
+        </div>
+        <div class="stack">
+          <span class="chip">scikit-learn</span>
+          <span class="chip">Random Forest</span>
+          <span class="chip">Voting Classifier</span>
+          <span class="chip">Feature Pipelines</span>
+        </div>
+        <div class="project-links"><a href="https://github.com/danielowuor/H1N1-flu-vaccine" target="_blank" rel="noopener">View repository →</a></div>
+      </div>
+    </div>
+
+    <!-- Project 3 -->
+    <div class="project project-progress">
+      <div class="project-tag">
+        <div class="num">CASE 03</div>
+        <div class="domain">Customer Analytics</div>
+        <div class="progress-badge">In Progress</div>
+      </div>
+      <div class="project-body">
+        <h3>SmartTel Retention Intelligence</h3>
+        <p class="desc">A decision-intelligence platform for telecom churn, built on the IBM Telco Customer Churn dataset (7,043 customers). Rather than stopping at a churn probability, the system is scoped to answer four operational questions: who is worth intervening on, when they're likely to leave, why they're at risk, and whether saving them is profitable — turning churn scoring into a budget-constrained, ROI-optimized retention decision.</p>
+        <div class="stat-row">
+          <div class="stat"><span class="val">0.83–0.85</span><span class="lab">target ROC-AUC</span></div>
+          <div class="stat"><span class="val">7,043</span><span class="lab">customers, 21 features</span></div>
+          <div class="stat"><span class="val">8</span><span class="lab">planned modules</span></div>
+        </div>
+        <div class="stack">
+          <span class="chip">XGBoost</span>
+          <span class="chip">SHAP</span>
+          <span class="chip">K-Prototypes</span>
+          <span class="chip">CLV × Risk Matrix</span>
+          <span class="chip">Streamlit</span>
+          <span class="chip">Docker</span>
+        </div>
+        <div class="project-links"><a href="https://github.com/danielowuor/Customer-Retention-Intelligence-System" target="_blank" rel="noopener">View repository →</a></div>
+        <div class="note">Currently in build: data audit and feature store are underway, with segmentation, calibrated churn scoring, CLV × risk prioritization, and a Streamlit ROI simulator planned across the next phases.</div>
+      </div>
+    </div>
+
+    <!-- Project 4 -->
+    <div class="project">
+      <div class="project-tag">
+        <div class="num">CASE 04</div>
+        <div class="domain">Recommender Systems</div>
+      </div>
+      <div class="project-body">
+        <h3>Movie Recommendation System</h3>
+        <p class="desc">A hybrid recommender built on the MovieLens dataset, combining collaborative filtering (tuned SVD matrix factorization) with content-based filtering (TF-IDF over genres and tags). The hybrid blend — weighted by an alpha parameter — balances personalization against content similarity to address the cold-start problem for new users and new titles.</p>
+        <div class="stack">
+          <span class="chip">SVD</span>
+          <span class="chip">TF-IDF</span>
+          <span class="chip">Cosine Similarity</span>
+          <span class="chip">Surprise</span>
+          <span class="chip">Tableau</span>
+        </div>
+        <div class="project-links"><a href="https://github.com/Marian-amo/Movies-Recommendation-System-Project" target="_blank" rel="noopener">View repository →</a></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="education" class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">04 — Education</div>
+      <h2>Background.</h2>
+    </div>
+    <div class="edu-list">
+      <div class="edu-item">
+        <div class="when">Completed</div>
+        <div>
+          <h3>Data Science Course</h3>
+          <p>Moringa School — data analysis, visualization, and machine learning</p>
+        </div>
+      </div>
+      <div class="edu-item">
+        <div class="when">Undergraduate</div>
+        <div>
+          <h3>BSc, Public Health</h3>
+          <p>Foundation in biostatistics and epidemiology</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-box">
+      <h2>Let's put data to work.</h2>
+      <div class="contact-links">
+        <a href="https://github.com/danielowuor" target="_blank" rel="noopener"><span class="arrow">→</span> github.com/danielowuor</a>
+        <a href="mailto:danonyango961@gmail.com"><span class="arrow">→</span> danonyango961@gmail.com</a>
+        <a href="https://www.linkedin.com/in/daniel-owuor/" target="_blank" rel="noopener"><span class="arrow">→</span> linkedin.com/in/daniel-owuor</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>Daniel Owuor — Data Scientist</footer>
+
+</body>
+</html>
